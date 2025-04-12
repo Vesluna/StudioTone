@@ -21,12 +21,12 @@
     </ul>
   </div>
 
-  <!-- Pop-ups -->
+  <!-- Pop-ups in Their Own Containers -->
   <div id="howItWorksPopup" class="popup">
     <div class="popup-content">
       <h2>How It Works</h2>
       <p>StudioTone is a music creation tool inspired by Roblox. Create, load, and customize your projects with ease.</p>
-      <button id="closeHowItWorks">Close</button>
+      <button class="close-popup" data-popup="howItWorksPopup">Close</button>
     </div>
   </div>
 
@@ -38,8 +38,7 @@
         <option value="light">Light</option>
         <option value="dark">Dark</option>
       </select>
-      <!-- Add more settings here later -->
-      <button id="closeSettings">Close</button>
+      <button class="close-popup" data-popup="settingsPopup">Close</button>
     </div>
   </div>
 
@@ -51,7 +50,7 @@
       <div id="errorMessage" style="display: none; color: red; border: 1px solid red; padding: 5px; margin-top: 10px;">
         ERROR // Local Save Not Found (Error 404)
       </div>
-      <button id="closeLoadProject">Close</button>
+      <button class="close-popup" data-popup="loadProjectPopup">Close</button>
     </div>
   </div>
 
@@ -66,7 +65,7 @@
         <option value="custom">Custom</option>
       </select>
       <button id="createProject">Create</button>
-      <button id="closeStartCreating">Close</button>
+      <button class="close-popup" data-popup="startCreatingPopup">Close</button>
     </div>
   </div>
 
