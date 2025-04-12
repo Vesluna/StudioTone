@@ -3,12 +3,14 @@ body {
   margin: 0;
   padding: 0;
   font-family: Arial, sans-serif;
-  background: white; /* Replace with your own Stud texture image */
-  background-repeat: repeat;
+  background: white url('assets/stud_texture.png') repeat; /* Fallback to white if no texture */
   overflow: hidden;
   height: 100vh;
   width: 100vw;
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 /* Canvas fills the entire background */
@@ -27,7 +29,6 @@ body {
   z-index: 1; /* Ensure menu sits above the canvas */
   width: 300px;
   margin: 0 auto;
-  top: 30%;
   background-color: rgba(255, 255, 255, 0.8);
   padding: 20px;
   border: 2px solid #000;
