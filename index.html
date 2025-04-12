@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudioTone - Music Maker</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>StudioTone</h1>
+        <div class="menu">
+            <button onclick="startCreating()">🎵 Start Creating</button>
+            <button onclick="loadProject()">📂 Load Project</button>
+            <button onclick="openSettings()">⚙️ Settings</button>
+            <button onclick="exit()">🚪 Exit</button>
+        </div>
+        <canvas id="visualizer"></canvas>
+    </div>
+    <audio id="bgMusic" src="assets/background_music.mp3" autoplay loop></audio>
+    <script src="script.js"></script>
+</body>
+</html>
