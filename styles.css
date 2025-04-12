@@ -3,7 +3,7 @@ body {
   margin: 0;
   padding: 0;
   font-family: Arial, sans-serif;
-  background: url('stud-texture.png'); /* Replace with your own Stud texture image */
+  background: white; /* Replace with your own Stud texture image */
   background-repeat: repeat;
   overflow: hidden;
   height: 100vh;
