@@ -1,9 +1,11 @@
 # StudioTone
-A Roblox-inspired music maker with a classic, fun vibe and a synced visualizer.
+A Roblox-inspired music maker with a vibrant, modern UI and synced visualizer.
 
 ## Features
-- Classic Roblox-style UI with blocky buttons, bold colors, and emoji-enhanced menu options.
-- Simple visualizer that syncs to background music.
+- Light-mode UI with a unique, Roblox-inspired aesthetic.
+- Rectangular buttons with emojis in a transparent container.
+- Smooth visualizer synced to background music.
+- Button click sound feedback.
 - Placeholder for saving/loading projects (`data.json`).
 
 ## Planned Features
