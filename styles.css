@@ -60,7 +60,7 @@ body {
 }
 
 .popup {
-  display: none;
+  display: none; /* Hidden by default */
   position: fixed;
   top: 0;
   left: 0;
@@ -81,15 +81,16 @@ body {
 
 body.dark {
   background: #333;
-  color: white;
 }
 
 body.dark .menu-container {
   background-color: rgba(0, 0, 0, 0.8);
+  color: white;
 }
 
 body.dark .menu-item {
   background-color: #555;
+  color: white;
 }
 
 body.dark .menu-item:hover {
