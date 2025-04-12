@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <!-- Background Canvas for Visualizer -->
+  <!-- Background Canvas for Checkers -->
   <canvas id="visualizerCanvas"></canvas>
   
   <!-- Main Menu Container -->
@@ -19,6 +19,55 @@
       <li class="menu-item" id="settings">⚙️ Settings</li>
       <li class="menu-item" id="howItWorks">🎧 How It Works</li>
     </ul>
+  </div>
+
+  <!-- Pop-ups -->
+  <div id="howItWorksPopup" class="popup">
+    <div class="popup-content">
+      <h2>How It Works</h2>
+      <p>StudioTone is a music creation tool inspired by Roblox. Create, load, and customize your projects with ease.</p>
+      <button id="closeHowItWorks">Close</button>
+    </div>
+  </div>
+
+  <div id="settingsPopup" class="popup">
+    <div class="popup-content">
+      <h2>Settings</h2>
+      <label for="theme">Theme:</label>
+      <select id="theme">
+        <option value="light">Light</option>
+        <option value="dark">Dark</option>
+      </select>
+      <!-- Add more settings here later -->
+      <button id="closeSettings">Close</button>
+    </div>
+  </div>
+
+  <div id="loadProjectPopup" class="popup">
+    <div class="popup-content">
+      <h2>Load Project</h2>
+      <button id="openFile">Open File</button>
+      <button id="loadLocalSave">Load Local Save</button>
+      <div id="errorMessage" style="display: none; color: red; border: 1px solid red; padding: 5px; margin-top: 10px;">
+        ERROR // Local Save Not Found (Error 404)
+      </div>
+      <button id="closeLoadProject">Close</button>
+    </div>
+  </div>
+
+  <div id="startCreatingPopup" class="popup">
+    <div class="popup-content">
+      <h2>Create New Project</h2>
+      <label for="projectName">Project Name (Required):</label>
+      <input type="text" id="projectName" required>
+      <label for="background">Background:</label>
+      <select id="background">
+        <option value="default">Default</option>
+        <option value="custom">Custom</option>
+      </select>
+      <button id="createProject">Create</button>
+      <button id="closeStartCreating">Close</button>
+    </div>
   </div>
 
   <!-- Background Music -->
