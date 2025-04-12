@@ -2,7 +2,7 @@ const canvas = document.getElementById('visualizerCanvas');
 const ctx = canvas.getContext('2d');
 const audio = document.getElementById('bgMusic');
 
-// Resize canvas
+// Resize canvas to fit window
 function resizeCanvas() {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
@@ -42,35 +42,37 @@ document.addEventListener('click', () => {
   }
 });
 
-// Menu item event listeners
+// Show pop-ups when corresponding buttons are clicked
 document.getElementById('howItWorks').addEventListener('click', () => {
   document.getElementById('howItWorksPopup').style.display = 'block';
-});
-
-document.getElementById('closeHowItWorks').addEventListener('click', () => {
-  document.getElementById('howItWorksPopup').style.display = 'none';
 });
 
 document.getElementById('settings').addEventListener('click', () => {
   document.getElementById('settingsPopup').style.display = 'block';
 });
 
-document.getElementById('closeSettings').addEventListener('click', () => {
-  document.getElementById('settingsPopup').style.display = 'none';
-});
-
-document.getElementById('theme').addEventListener('change', (e) => {
-  document.body.className = e.target.value;
-});
-
 document.getElementById('loadProject').addEventListener('click', () => {
   document.getElementById('loadProjectPopup').style.display = 'block';
 });
 
-document.getElementById('closeLoadProject').addEventListener('click', () => {
-  document.getElementById('loadProjectPopup').style.display = 'none';
+document.getElementById('startCreating').addEventListener('click', () => {
+  document.getElementById('startCreatingPopup').style.display = 'block';
 });
 
+// Close pop-ups
+document.querySelectorAll('.close-popup').forEach(button => {
+  button.addEventListener('click', () => {
+    const popupId = button.getAttribute('data-popup');
+    document.getElementById(popupId).style.display = 'none';
+  });
+});
+
+// Settings: Theme toggle
+document.getElementById('theme').addEventListener('change', (e) => {
+  document.body.className = e.target.value;
+});
+
+// Load Project: Functionality
 document.getElementById('loadLocalSave').addEventListener('click', () => {
   const localSaveExists = false; // Placeholder for actual check
   if (!localSaveExists) {
@@ -84,14 +86,7 @@ document.getElementById('openFile').addEventListener('click', () => {
   alert('Open file functionality to be implemented');
 });
 
-document.getElementById('startCreating').addEventListener('click', () => {
-  document.getElementById('startCreatingPopup').style.display = 'block';
-});
-
-document.getElementById('closeStartCreating').addEventListener('click', () => {
-  document.getElementById('startCreatingPopup').style.display = 'none';
-});
-
+// Start Creating: Project creation with validation
 document.getElementById('createProject').addEventListener('click', () => {
   const projectName = document.getElementById('projectName').value;
   if (!projectName) {
