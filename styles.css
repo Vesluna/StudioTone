@@ -1,9 +1,8 @@
-/* Apply the Roblox Stud texture as a repeating background */
 body {
+  background: white;
   margin: 0;
   padding: 0;
   font-family: Arial, sans-serif;
-  background: white url('assets/stud_texture.png') repeat; /* Fallback to white if no texture */
   overflow: hidden;
   height: 100vh;
   width: 100vw;
@@ -13,7 +12,6 @@ body {
   align-items: center;
 }
 
-/* Canvas fills the entire background */
 #visualizerCanvas {
   position: absolute;
   top: 0;
@@ -23,12 +21,10 @@ body {
   z-index: 0;
 }
 
-/* Main Menu Container */
 .menu-container {
   position: relative;
-  z-index: 1; /* Ensure menu sits above the canvas */
+  z-index: 1;
   width: 300px;
-  margin: 0 auto;
   background-color: rgba(255, 255, 255, 0.8);
   padding: 20px;
   border: 2px solid #000;
@@ -36,7 +32,6 @@ body {
   text-align: center;
 }
 
-/* Menu Title */
 .menu-container h1 {
   margin-top: 0;
   margin-bottom: 20px;
@@ -44,14 +39,12 @@ body {
   color: #000;
 }
 
-/* Menu Items List */
 .menu-items {
   list-style-type: none;
   padding: 0;
   margin: 0;
 }
 
-/* Individual Menu Items (Buttons) */
 .menu-item {
   background-color: #ccc;
   margin: 10px 0;
@@ -61,8 +54,49 @@ body {
   transition: background-color 0.2s, transform 0.2s;
 }
 
-/* Hover Effects */
 .menu-item:hover {
   background-color: #ddd;
   transform: translateY(-2px);
+}
+
+.popup {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 2;
+}
+
+.popup-content {
+  background: white;
+  padding: 20px;
+  border: 2px solid #000;
+  width: 300px;
+  margin: 20% auto;
+  text-align: center;
+}
+
+body.dark {
+  background: #333;
+  color: white;
+}
+
+body.dark .menu-container {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+body.dark .menu-item {
+  background-color: #555;
+}
+
+body.dark .menu-item:hover {
+  background-color: #666;
+}
+
+body.dark .popup-content {
+  background: #444;
+  color: white;
 }
