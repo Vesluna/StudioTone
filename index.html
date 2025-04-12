@@ -1,23 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StudioTone - Music Maker</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>StudioTone - Main Menu</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <h1>StudioTone</h1>
-        <div class="menu-box">
-            <button onclick="startCreating()">🎵 Start Creating</button>
-            <button onclick="loadProject()">📂 Load Project</button>
-            <button onclick="openSettings()">⚙️ Settings</button>
-            <button onclick="exit()">🚪 Exit</button>
-        </div>
-        <canvas id="visualizer"></canvas>
-    </div>
-    <audio id="bgMusic" src="assets/PixelLounge.mp3" autoplay loop></audio>
-    <script src="script.js"></script>
+  <!-- Background Canvas for Visualizer -->
+  <canvas id="visualizerCanvas"></canvas>
+  
+  <!-- Main Menu Container -->
+  <div class="menu-container">
+    <h1>StudioTone</h1>
+    <ul class="menu-items">
+      <li class="menu-item" id="startCreating">🎵 Start Creating</li>
+      <li class="menu-item" id="loadProject">📂 Load Project</li>
+      <li class="menu-item" id="settings">⚙️ Settings</li>
+      <li class="menu-item" id="howItWorks">🎧 How It Works</li>
+    </ul>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
