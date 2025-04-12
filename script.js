@@ -1,4 +1,4 @@
-// StudioTone Visualizer Script
+// StudioTone Visualizer Script 
 
 const canvas = document.getElementById('visualizerCanvas');
 const ctx = canvas.getContext('2d');
