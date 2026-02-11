@@ -59,6 +59,75 @@ body {
   transform: translateY(-2px);
 }
 
+.menu-item:focus-visible {
+  outline: 3px solid #3a7bff;
+  outline-offset: 2px;
+}
+
+.editor-container {
+  position: relative;
+  z-index: 1;
+  width: min(950px, 92vw);
+  min-height: min(600px, 84vh);
+  display: none;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+  border: 2px solid #000;
+  background: rgba(255, 255, 255, 0.86);
+  box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.35);
+}
+
+.editor-container.active {
+  display: flex;
+}
+
+.editor-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.editor-header h2 {
+  margin: 0;
+}
+
+.editor-header p {
+  margin: 5px 0 0;
+}
+
+.editor-header button {
+  padding: 10px 14px;
+  border: 2px solid #000;
+  background: #dedede;
+  cursor: pointer;
+}
+
+.editor-workspace {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+.editor-card {
+  border: 2px solid #000;
+  background: rgba(255, 255, 255, 0.92);
+  padding: 16px;
+}
+
+.editor-card h3 {
+  margin-top: 0;
+}
+
+.editor-card button {
+  width: 100%;
+  margin-top: 10px;
+  padding: 10px;
+  border: 2px solid #000;
+  cursor: pointer;
+}
+
 .popup {
   display: none; /* Hidden by default */
   position: fixed;
@@ -79,25 +148,68 @@ body {
   text-align: center;
 }
 
+.popup-content label,
+.popup-content input,
+.popup-content select,
+.popup-content button {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 10px;
+}
+
+.popup-content button {
+  cursor: pointer;
+}
+
+.status-popup-content {
+  border-color: #2a2a2a;
+}
+
+#statusTitle {
+  margin-top: 0;
+}
+
 body.dark {
   background: #333;
 }
 
-body.dark .menu-container {
+body.dark .menu-container,
+body.dark .editor-container {
   background-color: rgba(0, 0, 0, 0.8);
   color: white;
 }
 
-body.dark .menu-item {
+body.dark .menu-item,
+body.dark .editor-header button,
+body.dark .editor-card button {
   background-color: #555;
   color: white;
 }
 
-body.dark .menu-item:hover {
+body.dark .menu-item:hover,
+body.dark .editor-header button:hover,
+body.dark .editor-card button:hover {
   background-color: #666;
+}
+
+body.dark .menu-item:focus-visible {
+  outline-color: #8db3ff;
+}
+
+body.dark .editor-card {
+  background-color: rgba(20, 20, 20, 0.95);
 }
 
 body.dark .popup-content {
   background: #444;
   color: white;
+}
+
+body.dark .popup-content input,
+body.dark .popup-content select,
+body.dark .popup-content button {
+  background: #222;
+  color: #fff;
+  border: 1px solid #666;
 }

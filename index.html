@@ -11,7 +11,7 @@
   <canvas id="visualizerCanvas"></canvas>
   
   <!-- Main Menu Container -->
-  <div class="menu-container">
+  <div class="menu-container" id="mainMenu">
     <h1>StudioTone</h1>
     <ul class="menu-items">
       <li class="menu-item" id="startCreating">🎵 Start Creating</li>
@@ -19,6 +19,27 @@
       <li class="menu-item" id="settings">⚙️ Settings</li>
       <li class="menu-item" id="howItWorks">🎧 How It Works</li>
     </ul>
+  </div>
+
+  <div id="projectEditor" class="editor-container" aria-hidden="true">
+    <header class="editor-header">
+      <div>
+        <h2 id="editorProjectTitle">Untitled Project</h2>
+        <p id="editorProjectMeta">Background: Default</p>
+      </div>
+      <button id="backToMenu">← Back to Menu</button>
+    </header>
+    <section class="editor-workspace">
+      <div class="editor-card">
+        <h3>Project Editor</h3>
+        <p>Your project is now open. This is the editor workspace where timeline, tracks, and mixer tools can be expanded next.</p>
+      </div>
+      <div class="editor-card">
+        <h3>Quick Actions</h3>
+        <button id="saveProject">Save Project</button>
+        <button id="openMixer">Open Mixer</button>
+      </div>
+    </section>
   </div>
 
   <!-- Pop-ups in Their Own Containers -->
@@ -45,6 +66,7 @@
   <div id="loadProjectPopup" class="popup">
     <div class="popup-content">
       <h2>Load Project</h2>
+      <input type="file" id="projectFile" accept=".json,.studiotone,.txt" hidden>
       <button id="openFile">Open File</button>
       <button id="loadLocalSave">Load Local Save</button>
       <div id="errorMessage" style="display: none; color: red; border: 1px solid red; padding: 5px; margin-top: 10px;">
@@ -69,8 +91,16 @@
     </div>
   </div>
 
+  <div id="statusPopup" class="popup">
+    <div class="popup-content status-popup-content">
+      <h2 id="statusTitle">Notice</h2>
+      <p id="statusMessage"></p>
+      <button class="close-popup" data-popup="statusPopup">Okay</button>
+    </div>
+  </div>
+
   <!-- Background Music -->
-  <audio id="bgMusic" src="assets/background_music.mp3" autoplay loop></audio>
+  <audio id="bgMusic" src="assets/background_music.mp3" autoplay loop preload="auto"></audio>
   
   <script src="script.js"></script>
 </body>
