@@ -117,6 +117,64 @@ body {
   cursor: pointer;
 }
 
+
+.channel-controls {
+  margin-bottom: 8px;
+}
+
+.channel-controls button {
+  width: 100%;
+  padding: 8px;
+  border: 2px solid #000;
+  background: #d8ffd8;
+  cursor: pointer;
+}
+
+.channel-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 14px;
+  border: 2px solid #000;
+  max-height: 220px;
+  overflow: auto;
+}
+
+.channel-item {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 6px;
+  padding: 8px;
+  border-bottom: 1px solid #000;
+  background: #f4f4f4;
+}
+
+.channel-item:last-child {
+  border-bottom: none;
+}
+
+.channel-item.active {
+  background: #ddeaff;
+}
+
+.channel-select,
+.channel-instrument,
+.channel-remove {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #555;
+  padding: 6px;
+}
+
+.channel-select,
+.channel-remove {
+  background: #ececec;
+  cursor: pointer;
+}
+
+.channel-remove {
+  background: #ffd6d6;
+}
+
 .preset-list {
   list-style: none;
   padding: 0;
@@ -138,6 +196,11 @@ body {
 .preset-item.active {
   background: #a9d0ff;
   font-weight: 700;
+}
+
+.preset-item:focus-visible {
+  outline: 3px solid #3a7bff;
+  outline-offset: -3px;
 }
 
 .sidebar-hint {
@@ -310,6 +373,9 @@ body.dark .editor-main {
 
 body.dark .editor-sidebar,
 body.dark .preset-list,
+body.dark .channel-list,
+body.dark .note-grid {
+  background: rgba(24, 24, 24, 0.95);
 body.dark .note-grid {
   background: rgba(24, 24, 24, 0.95);
   color: white;
@@ -323,9 +389,16 @@ body.dark .preset-item {
 body.dark .editor-container {
   background-color: rgba(0, 0, 0, 0.8);
   color: white;
+  border-color: #888;
 }
 
 body.dark .menu-item,
+body.dark .editor-sidebar button,
+body.dark .editor-main-header button,
+body.dark .preset-item,
+body.dark .channel-select,
+body.dark .channel-remove,
+body.dark .channel-controls button {
 body.dark .editor-header button,
 body.dark .editor-card button {
   background-color: #555;
@@ -345,6 +418,10 @@ body.dark .menu-item:focus-visible {
 
 body.dark .preset-item.active {
   background: #30548c;
+}
+
+body.dark .preset-item:focus-visible {
+  outline-color: #8db3ff;
 }
 
 body.dark .note-cell {
@@ -387,4 +464,19 @@ body.dark .popup-content button {
     grid-template-columns: 1fr;
     grid-template-rows: auto 1fr;
   }
+}
+
+body.dark .channel-item {
+  background: #2c2c2c;
+  border-bottom-color: #666;
+}
+
+body.dark .channel-item.active {
+  background: #2d4368;
+}
+
+body.dark .channel-instrument {
+  background: #1d1d1d;
+  color: #fff;
+  border-color: #666;
 }

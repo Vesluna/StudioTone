@@ -29,6 +29,12 @@
       <button id="saveProject">Save Project</button>
       <button id="openMixer">Open Mixer</button>
 
+      <h3>Channels</h3>
+      <div class="channel-controls">
+        <button id="addChannel">+ Add Channel</button>
+      </div>
+      <ul class="channel-list" id="channelList"></ul>
+
       <h3>Instrument Presets</h3>
       <ul class="preset-list" id="presetList">
         <li class="preset-item active" data-preset="Lead Synth">Lead Synth</li>
@@ -36,6 +42,7 @@
         <li class="preset-item" data-preset="Drum Kit">Drum Kit</li>
         <li class="preset-item" data-preset="FX Noise">FX Noise</li>
       </ul>
+      <p class="sidebar-hint">Tip: Select a channel + instrument, then place notes on the grid.</p>
       <p class="sidebar-hint">Tip: Click any preset, then place notes on the grid.</p>
     </aside>
 
@@ -43,6 +50,7 @@
       <header class="editor-main-header">
         <div>
           <h3>Main Editor</h3>
+          <p id="selectedPresetLabel">Channel 1 • Selected: Lead Synth</p>
           <p id="selectedPresetLabel">Selected: Lead Synth</p>
         </div>
         <button id="clearNotes">Clear Notes</button>

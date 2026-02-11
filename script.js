@@ -6,6 +6,7 @@ const projectEditor = document.getElementById('projectEditor');
 const themeSelect = document.getElementById('theme');
 const errorMessage = document.getElementById('errorMessage');
 const noteGrid = document.getElementById('noteGrid');
+const channelList = document.getElementById('channelList');
 
 const STORAGE_KEYS = {
   settings: 'studiotone-settings',
@@ -14,6 +15,11 @@ const STORAGE_KEYS = {
 
 const GRID_COLUMNS = 16;
 const GRID_ROWS = 12;
+const DEFAULT_PRESET = 'Lead Synth';
+
+let currentProject = null;
+let selectedPreset = DEFAULT_PRESET;
+let activeChannelId = null;
 
 let currentProject = null;
 let selectedPreset = 'Lead Synth';
@@ -50,6 +56,41 @@ function drawCheckers() {
 drawCheckers();
 
 function saveJSON(key, value) {
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+    return true;
+  } catch (_error) {
+    return false;
+  }
+}
+
+function loadJSON(key, fallbackValue = null) {
+  try {
+    const raw = localStorage.getItem(key);
+    return raw ? JSON.parse(raw) : fallbackValue;
+  } catch (_error) {
+    return fallbackValue;
+  }
+}
+
+function tryStartBackgroundMusic() {
+  audio.volume = 0.6;
+  const playAttempt = audio.play();
+  if (playAttempt && typeof playAttempt.catch === 'function') {
+    playAttempt.catch(() => {});
+  }
+}
+
+function stopBackgroundMusic() {
+  audio.pause();
+  audio.currentTime = 0;
+}
+
+window.addEventListener('load', tryStartBackgroundMusic);
+document.addEventListener('visibilitychange', () => {
+  if (!document.hidden && mainMenu.style.display !== 'none') {
+    tryStartBackgroundMusic();
+  }
   localStorage.setItem(key, JSON.stringify(value));
 }
 
@@ -273,12 +314,144 @@ function normalizeBackgroundLabel(value) {
   return value === 'custom' ? 'Custom' : 'Default';
 }
 
+function getActiveChannel() {
+  if (!currentProject) {
+    return null;
+  }
+  return currentProject.channels.find((channel) => channel.id === activeChannelId) || null;
+}
+
+function createChannel(name = null, instrument = DEFAULT_PRESET) {
+  const nextNumber = currentProject.channels.length + 1;
+  return {
+    id: `ch_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
+    name: name || `Channel ${nextNumber}`,
+    instrument,
+    notes: []
+  };
+}
+
+function updateSelectedPresetLabel() {
+  const activeChannel = getActiveChannel();
+  const channelLabel = activeChannel ? activeChannel.name : 'No Channel';
+  document.getElementById('selectedPresetLabel').textContent = `${channelLabel} • Selected: ${selectedPreset}`;
+}
+
 function updateProjectMeta() {
   if (!currentProject) {
     return;
   }
 
   document.getElementById('editorProjectTitle').textContent = currentProject.name;
+  document.getElementById('editorProjectMeta').textContent = `Background: ${normalizeBackgroundLabel(currentProject.background)} • Channels: ${currentProject.channels.length} • Updated ${new Date(currentProject.updatedAt).toLocaleTimeString()}`;
+}
+
+function renderChannelList() {
+  channelList.innerHTML = '';
+
+  if (!currentProject) {
+    return;
+  }
+
+  currentProject.channels.forEach((channel, index) => {
+    const li = document.createElement('li');
+    li.className = `channel-item${channel.id === activeChannelId ? ' active' : ''}`;
+
+    const channelButton = document.createElement('button');
+    channelButton.type = 'button';
+    channelButton.className = 'channel-select';
+    channelButton.textContent = channel.name;
+    channelButton.addEventListener('click', () => {
+      activeChannelId = channel.id;
+      selectedPreset = channel.instrument || DEFAULT_PRESET;
+      updateSelectedPreset(selectedPreset);
+      renderChannelList();
+      renderGridFromProject();
+    });
+
+    const instrumentSelect = document.createElement('select');
+    instrumentSelect.className = 'channel-instrument';
+    ['Lead Synth', 'Bass Pulse', 'Drum Kit', 'FX Noise'].forEach((preset) => {
+      const option = document.createElement('option');
+      option.value = preset;
+      option.textContent = preset;
+      if ((channel.instrument || DEFAULT_PRESET) === preset) {
+        option.selected = true;
+      }
+      instrumentSelect.appendChild(option);
+    });
+
+    instrumentSelect.addEventListener('change', (event) => {
+      channel.instrument = event.target.value;
+      if (channel.id === activeChannelId) {
+        updateSelectedPreset(channel.instrument);
+      }
+      saveCurrentProjectToLocal(false);
+    });
+
+    li.appendChild(channelButton);
+    li.appendChild(instrumentSelect);
+
+    if (index > 0) {
+      const removeButton = document.createElement('button');
+      removeButton.type = 'button';
+      removeButton.className = 'channel-remove';
+      removeButton.textContent = 'Remove';
+      removeButton.addEventListener('click', () => {
+        currentProject.channels = currentProject.channels.filter((item) => item.id !== channel.id);
+        if (activeChannelId === channel.id) {
+          activeChannelId = currentProject.channels[0].id;
+          selectedPreset = currentProject.channels[0].instrument || DEFAULT_PRESET;
+        }
+        renderChannelList();
+        renderGridFromProject();
+        updateSelectedPresetLabel();
+        updateProjectMeta();
+        saveCurrentProjectToLocal(false);
+      });
+      li.appendChild(removeButton);
+    }
+
+    channelList.appendChild(li);
+  });
+}
+
+function ensureProjectStructure(projectData) {
+  const normalized = {
+    name: projectData.name,
+    background: projectData.background === 'custom' ? 'custom' : 'default',
+    updatedAt: new Date().toISOString(),
+    channels: []
+  };
+
+  if (Array.isArray(projectData.channels) && projectData.channels.length > 0) {
+    normalized.channels = projectData.channels.map((channel, index) => ({
+      id: channel.id || `imported_${index}_${Date.now()}`,
+      name: channel.name || `Channel ${index + 1}`,
+      instrument: channel.instrument || DEFAULT_PRESET,
+      notes: Array.isArray(channel.notes) ? channel.notes : []
+    }));
+  } else {
+    const fallbackNotes = Array.isArray(projectData.notes) ? projectData.notes : [];
+    normalized.channels = [{
+      id: `legacy_${Date.now()}`,
+      name: 'Channel 1',
+      instrument: DEFAULT_PRESET,
+      notes: fallbackNotes
+    }];
+  }
+
+  return normalized;
+}
+
+function setCurrentProject(projectData) {
+  currentProject = ensureProjectStructure(projectData);
+  activeChannelId = currentProject.channels[0]?.id || null;
+  selectedPreset = currentProject.channels[0]?.instrument || DEFAULT_PRESET;
+
+  updateProjectMeta();
+  updateSelectedPreset(selectedPreset);
+  renderChannelList();
   document.getElementById('editorProjectMeta').textContent = `Background: ${normalizeBackgroundLabel(currentProject.background)} • Updated ${new Date(currentProject.updatedAt).toLocaleTimeString()}`;
 }
 
@@ -312,6 +485,7 @@ function returnToMainMenu() {
   tryStartBackgroundMusic();
 }
 
+function saveCurrentProjectToLocal(showPopup = true) {
 function saveCurrentProjectToLocal() {
   if (!currentProject) {
     showStatusPopup('No Active Project', 'Create or load a project before saving.');
@@ -320,6 +494,16 @@ function saveCurrentProjectToLocal() {
 
   currentProject.updatedAt = new Date().toISOString();
   updateProjectMeta();
+  const didSave = saveJSON(STORAGE_KEYS.lastProject, currentProject);
+
+  if (!didSave) {
+    showStatusPopup('Save Failed', 'Could not save project. Your browser may be blocking local storage.');
+    return;
+  }
+
+  if (showPopup) {
+    showStatusPopup('Project Saved', `Saved "${currentProject.name}" to local storage.`);
+  }
   saveJSON(STORAGE_KEYS.lastProject, currentProject);
   showStatusPopup('Project Saved', `Saved "${currentProject.name}" to local storage.`);
 }
@@ -364,6 +548,7 @@ function parseProjectFile(file) {
           reject(new Error('Missing project name.'));
           return;
         }
+        resolve(parsed);
 
         resolve({
           name: String(parsed.name),
@@ -382,15 +567,36 @@ function parseProjectFile(file) {
 
 function updateSelectedPreset(presetName) {
   selectedPreset = presetName;
+  const activeChannel = getActiveChannel();
+  if (activeChannel) {
+    activeChannel.instrument = selectedPreset;
+  }
   document.getElementById('selectedPresetLabel').textContent = `Selected: ${selectedPreset}`;
 
   document.querySelectorAll('.preset-item').forEach((item) => {
     item.classList.toggle('active', item.dataset.preset === selectedPreset);
   });
+
+  renderChannelList();
+  updateSelectedPresetLabel();
 }
 
 function initializePresets() {
   document.querySelectorAll('.preset-item').forEach((item) => {
+    item.setAttribute('tabindex', '0');
+    item.setAttribute('role', 'button');
+
+    const activate = () => {
+      updateSelectedPreset(item.dataset.preset);
+      saveCurrentProjectToLocal(false);
+    };
+
+    item.addEventListener('click', activate);
+    item.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        activate();
+      }
     item.addEventListener('click', () => {
       updateSelectedPreset(item.dataset.preset);
     });
@@ -399,6 +605,7 @@ function initializePresets() {
 
 function buildGrid() {
   noteGrid.innerHTML = '';
+
   for (let row = 0; row < GRID_ROWS; row += 1) {
     for (let col = 0; col < GRID_COLUMNS; col += 1) {
       const cell = document.createElement('button');
@@ -410,6 +617,22 @@ function buildGrid() {
       cell.setAttribute('aria-label', `Row ${row + 1}, Step ${col + 1}`);
 
       cell.addEventListener('click', () => {
+        const activeChannel = getActiveChannel();
+        if (!currentProject || !activeChannel) {
+          showStatusPopup('No Active Channel', 'Add/select a channel before placing notes.');
+          return;
+        }
+
+        const existingIndex = activeChannel.notes.findIndex((note) => note.row === row && note.col === col);
+
+        if (existingIndex >= 0) {
+          activeChannel.notes.splice(existingIndex, 1);
+        } else {
+          activeChannel.notes.push({ row, col, preset: selectedPreset });
+        }
+
+        renderGridFromProject();
+        saveCurrentProjectToLocal(false);
         if (!currentProject) {
           showStatusPopup('No Active Project', 'Create a project before placing notes.');
           return;
@@ -446,6 +669,12 @@ function renderGridFromProject() {
     cell.textContent = '';
   });
 
+  const activeChannel = getActiveChannel();
+  if (!activeChannel || !Array.isArray(activeChannel.notes)) {
+    return;
+  }
+
+  activeChannel.notes.forEach((note) => {
   if (!currentProject || !Array.isArray(currentProject.notes)) {
     return;
   }
@@ -457,6 +686,7 @@ function renderGridFromProject() {
       return;
     }
 
+    const preset = note.preset || activeChannel.instrument || DEFAULT_PRESET;
     const preset = note.preset || selectedPreset;
     cell.classList.add('active');
     cell.dataset.preset = preset;
@@ -465,11 +695,32 @@ function renderGridFromProject() {
 }
 
 function clearAllNotes() {
+  const activeChannel = getActiveChannel();
+  if (!activeChannel) {
+    showStatusPopup('No Active Channel', 'Create or load a project first.');
+    return;
+  }
+
+  activeChannel.notes = [];
+  renderGridFromProject();
+  saveCurrentProjectToLocal(false);
+  showStatusPopup('Grid Cleared', `All notes were removed from ${activeChannel.name}.`);
+}
+
+function addChannel() {
   if (!currentProject) {
     showStatusPopup('No Active Project', 'Create or load a project first.');
     return;
   }
 
+  const newChannel = createChannel();
+  currentProject.channels.push(newChannel);
+  activeChannelId = newChannel.id;
+  updateSelectedPreset(newChannel.instrument);
+  renderChannelList();
+  renderGridFromProject();
+  updateProjectMeta();
+  saveCurrentProjectToLocal(false);
   currentProject.notes = [];
   renderGridFromProject();
   showStatusPopup('Grid Cleared', 'All notes were removed from this pattern.');
@@ -505,6 +756,28 @@ document.querySelectorAll('.close-popup').forEach((button) => {
   button.addEventListener('click', () => {
     const popupId = button.getAttribute('data-popup');
     setPopupVisibility(popupId, false);
+  });
+});
+
+document.querySelectorAll('.popup').forEach((popup) => {
+  popup.addEventListener('click', (event) => {
+    if (event.target === popup) {
+      popup.style.display = 'none';
+    }
+  });
+});
+
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape') {
+    closeAllPopups();
+  }
+});
+
+themeSelect.addEventListener('change', (event) => {
+  applyTheme(event.target.value);
+});
+
+document.getElementById('loadLocalSave').addEventListener('click', loadProjectFromLocalSave);
   });
 });
 
@@ -580,6 +853,21 @@ document.getElementById('createProject').addEventListener('click', () => {
 
   setPopupVisibility('startCreatingPopup', false);
   document.getElementById('projectName').value = '';
+  openProjectEditor({
+    name: projectName,
+    background,
+    channels: [{ id: `ch_${Date.now()}`, name: 'Channel 1', instrument: DEFAULT_PRESET, notes: [] }]
+  });
+  saveCurrentProjectToLocal(false);
+});
+
+document.getElementById('backToMenu').addEventListener('click', returnToMainMenu);
+document.getElementById('saveProject').addEventListener('click', saveCurrentProjectToLocal);
+document.getElementById('openMixer').addEventListener('click', () => {
+  showStatusPopup('Open Mixer', 'Mixer controls are coming soon.');
+});
+document.getElementById('clearNotes').addEventListener('click', clearAllNotes);
+document.getElementById('addChannel').addEventListener('click', addChannel);
   openProjectEditor({ name: projectName, background, notes: [] });
   saveCurrentProjectToLocal();
 });
