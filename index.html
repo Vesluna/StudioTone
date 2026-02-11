@@ -7,11 +7,9 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <!-- Background Canvas for Checkers -->
   <canvas id="visualizerCanvas"></canvas>
-  
-  <!-- Main Menu Container -->
-  <div class="menu-container">
+
+  <div class="menu-container" id="mainMenu">
     <h1>StudioTone</h1>
     <ul class="menu-items">
       <li class="menu-item" id="startCreating">🎵 Start Creating</li>
@@ -21,7 +19,43 @@
     </ul>
   </div>
 
-  <!-- Pop-ups in Their Own Containers -->
+  <div id="projectEditor" class="editor-container" aria-hidden="true">
+    <aside class="editor-sidebar">
+      <h2 id="editorProjectTitle">Untitled Project</h2>
+      <p id="editorProjectMeta">Background: Default</p>
+      <button id="backToMenu">← Back to Menu</button>
+      <button id="saveProject">Save Project</button>
+      <button id="openMixer">Open Mixer</button>
+
+      <h3>Channels</h3>
+      <div class="channel-controls">
+        <button id="addChannel">+ Add Channel</button>
+      </div>
+      <ul class="channel-list" id="channelList"></ul>
+
+      <h3>Instrument Presets</h3>
+      <ul class="preset-list" id="presetList">
+        <li class="preset-item active" data-preset="Lead Synth">Lead Synth</li>
+        <li class="preset-item" data-preset="Bass Pulse">Bass Pulse</li>
+        <li class="preset-item" data-preset="Drum Kit">Drum Kit</li>
+        <li class="preset-item" data-preset="FX Noise">FX Noise</li>
+      </ul>
+      <p class="sidebar-hint">Tip: Select a channel + instrument, then place notes on the grid.</p>
+    </aside>
+
+    <section class="editor-main">
+      <header class="editor-main-header">
+        <div>
+          <h3>Main Editor</h3>
+          <p id="selectedPresetLabel">Channel 1 • Selected: Lead Synth</p>
+        </div>
+        <button id="clearNotes">Clear Notes</button>
+      </header>
+      <div id="noteGrid" class="note-grid" aria-label="Note placement grid"></div>
+      <p class="grid-hint">Click or tap cells to place/remove notes (JummBox-style sketch mode).</p>
+    </section>
+  </div>
+
   <div id="howItWorksPopup" class="popup">
     <div class="popup-content">
       <h2>How It Works</h2>
@@ -45,6 +79,7 @@
   <div id="loadProjectPopup" class="popup">
     <div class="popup-content">
       <h2>Load Project</h2>
+      <input type="file" id="projectFile" accept=".json,.studiotone,.txt" hidden>
       <button id="openFile">Open File</button>
       <button id="loadLocalSave">Load Local Save</button>
       <div id="errorMessage" style="display: none; color: red; border: 1px solid red; padding: 5px; margin-top: 10px;">
@@ -69,9 +104,16 @@
     </div>
   </div>
 
-  <!-- Background Music -->
-  <audio id="bgMusic" src="assets/background_music.mp3" autoplay loop></audio>
-  
+  <div id="statusPopup" class="popup">
+    <div class="popup-content status-popup-content">
+      <h2 id="statusTitle">Notice</h2>
+      <p id="statusMessage"></p>
+      <button class="close-popup" data-popup="statusPopup">Okay</button>
+    </div>
+  </div>
+
+  <audio id="bgMusic" src="assets/background_music.mp3" autoplay loop preload="auto"></audio>
+
   <script src="script.js"></script>
 </body>
 </html>
