@@ -25,7 +25,7 @@ body {
   position: relative;
   z-index: 1;
   width: 300px;
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: rgba(255, 255, 255, 0.84);
   padding: 20px;
   border: 2px solid #000;
   box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.5);
@@ -59,8 +59,151 @@ body {
   transform: translateY(-2px);
 }
 
+.menu-item:focus-visible {
+  outline: 3px solid #3a7bff;
+  outline-offset: 2px;
+}
+
+.editor-container {
+  position: relative;
+  z-index: 1;
+  width: min(1100px, 96vw);
+  min-height: min(700px, 90vh);
+  display: none;
+  grid-template-columns: minmax(240px, 300px) 1fr;
+  gap: 14px;
+  padding: 14px;
+  border: 2px solid #000;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.35);
+}
+
+.editor-container.active {
+  display: grid;
+}
+
+.editor-sidebar {
+  border: 2px solid #000;
+  background: rgba(240, 240, 240, 0.94);
+  padding: 14px;
+  overflow: auto;
+}
+
+.editor-sidebar h2 {
+  margin: 0;
+}
+
+.editor-sidebar h3 {
+  margin-bottom: 8px;
+}
+
+.editor-sidebar button {
+  width: 100%;
+  margin-top: 8px;
+  padding: 10px;
+  border: 2px solid #000;
+  background: #dedede;
+  cursor: pointer;
+}
+
+.preset-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border: 2px solid #000;
+}
+
+.preset-item {
+  padding: 8px 10px;
+  border-bottom: 1px solid #000;
+  background: #f2f2f2;
+  cursor: pointer;
+}
+
+.preset-item:last-child {
+  border-bottom: none;
+}
+
+.preset-item.active {
+  background: #a9d0ff;
+  font-weight: 700;
+}
+
+.sidebar-hint {
+  font-size: 0.86rem;
+  opacity: 0.8;
+}
+
+.editor-main {
+  border: 2px solid #000;
+  background: rgba(255, 255, 255, 0.96);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.editor-main-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.editor-main-header h3 {
+  margin: 0;
+}
+
+.editor-main-header p {
+  margin: 4px 0 0;
+}
+
+.editor-main-header button {
+  padding: 10px 12px;
+  border: 2px solid #000;
+  background: #dedede;
+  cursor: pointer;
+}
+
+.note-grid {
+  display: grid;
+  grid-template-columns: repeat(16, minmax(22px, 1fr));
+  gap: 6px;
+  border: 2px solid #000;
+  padding: 8px;
+  background: #ececec;
+  min-height: 360px;
+}
+
+.note-cell {
+  aspect-ratio: 1 / 1;
+  border: 1px solid #666;
+  background: #fff;
+  cursor: pointer;
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 0;
+}
+
+.note-cell:hover {
+  background: #d7ebff;
+}
+
+.note-cell.active {
+  background: #3a7bff;
+  color: #fff;
+  border-color: #1748a8;
+}
+
+.grid-hint {
+  margin-bottom: 0;
+  font-size: 0.88rem;
+  opacity: 0.75;
+}
+
 .popup {
-  display: none; /* Hidden by default */
+  display: none;
   position: fixed;
   top: 0;
   left: 0;
@@ -79,25 +222,93 @@ body {
   text-align: center;
 }
 
+.popup-content label,
+.popup-content input,
+.popup-content select,
+.popup-content button {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 10px;
+}
+
+.popup-content button {
+  cursor: pointer;
+}
+
 body.dark {
   background: #333;
 }
 
-body.dark .menu-container {
-  background-color: rgba(0, 0, 0, 0.8);
+body.dark .menu-container,
+body.dark .editor-container,
+body.dark .editor-main {
+  background-color: rgba(0, 0, 0, 0.84);
   color: white;
 }
 
-body.dark .menu-item {
+body.dark .editor-sidebar,
+body.dark .preset-list,
+body.dark .note-grid {
+  background: rgba(24, 24, 24, 0.95);
+  color: white;
+  border-color: #888;
+}
+
+body.dark .menu-item,
+body.dark .editor-sidebar button,
+body.dark .editor-main-header button,
+body.dark .preset-item {
   background-color: #555;
   color: white;
 }
 
-body.dark .menu-item:hover {
+body.dark .menu-item:hover,
+body.dark .editor-sidebar button:hover,
+body.dark .editor-main-header button:hover,
+body.dark .preset-item:hover {
   background-color: #666;
+}
+
+body.dark .menu-item:focus-visible {
+  outline-color: #8db3ff;
+}
+
+body.dark .preset-item.active {
+  background: #30548c;
+}
+
+body.dark .note-cell {
+  background: #252525;
+  color: #fff;
+  border-color: #666;
+}
+
+body.dark .note-cell:hover {
+  background: #3a4d66;
+}
+
+body.dark .note-cell.active {
+  background: #5390ff;
+  border-color: #82b0ff;
 }
 
 body.dark .popup-content {
   background: #444;
   color: white;
+}
+
+body.dark .popup-content input,
+body.dark .popup-content select,
+body.dark .popup-content button {
+  background: #222;
+  color: #fff;
+  border: 1px solid #666;
+}
+
+@media (max-width: 920px) {
+  .editor-container.active {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+  }
 }
