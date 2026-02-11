@@ -9,6 +9,8 @@
 <body>
   <canvas id="visualizerCanvas"></canvas>
 
+  
+  <!-- Main Menu Container -->
   <div class="menu-container" id="mainMenu">
     <h1>StudioTone</h1>
     <ul class="menu-items">
@@ -41,6 +43,7 @@
         <li class="preset-item" data-preset="FX Noise">FX Noise</li>
       </ul>
       <p class="sidebar-hint">Tip: Select a channel + instrument, then place notes on the grid.</p>
+      <p class="sidebar-hint">Tip: Click any preset, then place notes on the grid.</p>
     </aside>
 
     <section class="editor-main">
@@ -48,6 +51,7 @@
         <div>
           <h3>Main Editor</h3>
           <p id="selectedPresetLabel">Channel 1 • Selected: Lead Synth</p>
+          <p id="selectedPresetLabel">Selected: Lead Synth</p>
         </div>
         <button id="clearNotes">Clear Notes</button>
       </header>
@@ -56,6 +60,27 @@
     </section>
   </div>
 
+    <header class="editor-header">
+      <div>
+        <h2 id="editorProjectTitle">Untitled Project</h2>
+        <p id="editorProjectMeta">Background: Default</p>
+      </div>
+      <button id="backToMenu">← Back to Menu</button>
+    </header>
+    <section class="editor-workspace">
+      <div class="editor-card">
+        <h3>Project Editor</h3>
+        <p>Your project is now open. This is the editor workspace where timeline, tracks, and mixer tools can be expanded next.</p>
+      </div>
+      <div class="editor-card">
+        <h3>Quick Actions</h3>
+        <button id="saveProject">Save Project</button>
+        <button id="openMixer">Open Mixer</button>
+      </div>
+    </section>
+  </div>
+
+  <!-- Pop-ups in Their Own Containers -->
   <div id="howItWorksPopup" class="popup">
     <div class="popup-content">
       <h2>How It Works</h2>
@@ -114,6 +139,9 @@
 
   <audio id="bgMusic" src="assets/background_music.mp3" autoplay loop preload="auto"></audio>
 
+  <!-- Background Music -->
+  <audio id="bgMusic" src="assets/background_music.mp3" autoplay loop preload="auto"></audio>
+  
   <script src="script.js"></script>
 </body>
 </html>

@@ -75,6 +75,17 @@ body {
   padding: 14px;
   border: 2px solid #000;
   background: rgba(255, 255, 255, 0.9);
+.editor-container {
+  position: relative;
+  z-index: 1;
+  width: min(950px, 92vw);
+  min-height: min(600px, 84vh);
+  display: none;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+  border: 2px solid #000;
+  background: rgba(255, 255, 255, 0.86);
   box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.35);
 }
 
@@ -224,6 +235,26 @@ body {
 
 .editor-main-header button {
   padding: 10px 12px;
+  display: flex;
+}
+
+.editor-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.editor-header h2 {
+  margin: 0;
+}
+
+.editor-header p {
+  margin: 5px 0 0;
+}
+
+.editor-header button {
+  padding: 10px 14px;
   border: 2px solid #000;
   background: #dedede;
   cursor: pointer;
@@ -263,6 +294,28 @@ body {
   margin-bottom: 0;
   font-size: 0.88rem;
   opacity: 0.75;
+.editor-workspace {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+.editor-card {
+  border: 2px solid #000;
+  background: rgba(255, 255, 255, 0.92);
+  padding: 16px;
+}
+
+.editor-card h3 {
+  margin-top: 0;
+}
+
+.editor-card button {
+  width: 100%;
+  margin-top: 10px;
+  padding: 10px;
+  border: 2px solid #000;
+  cursor: pointer;
 }
 
 .popup {
@@ -299,6 +352,14 @@ body {
   cursor: pointer;
 }
 
+.status-popup-content {
+  border-color: #2a2a2a;
+}
+
+#statusTitle {
+  margin-top: 0;
+}
+
 body.dark {
   background: #333;
 }
@@ -315,6 +376,18 @@ body.dark .preset-list,
 body.dark .channel-list,
 body.dark .note-grid {
   background: rgba(24, 24, 24, 0.95);
+body.dark .note-grid {
+  background: rgba(24, 24, 24, 0.95);
+  color: white;
+  border-color: #888;
+}
+
+body.dark .menu-item,
+body.dark .editor-sidebar button,
+body.dark .editor-main-header button,
+body.dark .preset-item {
+body.dark .editor-container {
+  background-color: rgba(0, 0, 0, 0.8);
   color: white;
   border-color: #888;
 }
@@ -326,6 +399,8 @@ body.dark .preset-item,
 body.dark .channel-select,
 body.dark .channel-remove,
 body.dark .channel-controls button {
+body.dark .editor-header button,
+body.dark .editor-card button {
   background-color: #555;
   color: white;
 }
@@ -362,6 +437,13 @@ body.dark .note-cell:hover {
 body.dark .note-cell.active {
   background: #5390ff;
   border-color: #82b0ff;
+body.dark .editor-header button:hover,
+body.dark .editor-card button:hover {
+  background-color: #666;
+}
+
+body.dark .editor-card {
+  background-color: rgba(20, 20, 20, 0.95);
 }
 
 body.dark .popup-content {
