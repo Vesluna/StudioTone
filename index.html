@@ -7,34 +7,28 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <canvas id="visualizerCanvas"></canvas>
+  <canvas id="visualizerCanvas" aria-hidden="true"></canvas>
 
-  
-  <!-- Main Menu Container -->
-  <div class="menu-container" id="mainMenu">
+  <main class="menu-container" id="mainMenu">
     <h1>StudioTone</h1>
     <ul class="menu-items">
-      <li class="menu-item" id="startCreating">🎵 Start Creating</li>
-      <li class="menu-item" id="loadProject">📂 Load Project</li>
-      <li class="menu-item" id="settings">⚙️ Settings</li>
-      <li class="menu-item" id="howItWorks">🎧 How It Works</li>
+      <li class="menu-item" id="startCreating" tabindex="0" role="button">🎵 Start Creating</li>
+      <li class="menu-item" id="loadProject" tabindex="0" role="button">📂 Load Project</li>
+      <li class="menu-item" id="settings" tabindex="0" role="button">⚙️ Settings</li>
+      <li class="menu-item" id="howItWorks" tabindex="0" role="button">🎧 How It Works</li>
     </ul>
-  </div>
+  </main>
 
-  <div id="projectEditor" class="editor-container" aria-hidden="true">
+  <section id="projectEditor" class="editor-container" aria-hidden="true">
     <aside class="editor-sidebar">
       <h2 id="editorProjectTitle">Untitled Project</h2>
       <p id="editorProjectMeta">Background: Default</p>
-      <button id="backToMenu">← Back to Menu</button>
-      <button id="saveProject">Save Project</button>
-      <button id="openMixer">Open Mixer</button>
-
+      <button id="backToMenu" type="button">← Back to Menu</button>
+      <button id="saveProject" type="button">Save Project</button>
+      <button id="openMixer" type="button">Open Mixer</button>
       <h3>Channels</h3>
-      <div class="channel-controls">
-        <button id="addChannel">+ Add Channel</button>
-      </div>
+      <div class="channel-controls"><button id="addChannel" type="button">+ Add Channel</button></div>
       <ul class="channel-list" id="channelList"></ul>
-
       <h3>Instrument Presets</h3>
       <ul class="preset-list" id="presetList">
         <li class="preset-item active" data-preset="Lead Synth">Lead Synth</li>
@@ -42,8 +36,7 @@
         <li class="preset-item" data-preset="Drum Kit">Drum Kit</li>
         <li class="preset-item" data-preset="FX Noise">FX Noise</li>
       </ul>
-      <p class="sidebar-hint">Tip: Select a channel + instrument, then place notes on the grid.</p>
-      <p class="sidebar-hint">Tip: Click any preset, then place notes on the grid.</p>
+      <p class="sidebar-hint">Select a channel and preset, then place notes on the grid.</p>
     </aside>
 
     <section class="editor-main">
@@ -51,97 +44,31 @@
         <div>
           <h3>Main Editor</h3>
           <p id="selectedPresetLabel">Channel 1 • Selected: Lead Synth</p>
-          <p id="selectedPresetLabel">Selected: Lead Synth</p>
         </div>
-        <button id="clearNotes">Clear Notes</button>
+        <button id="clearNotes" type="button">Clear Notes</button>
       </header>
       <div id="noteGrid" class="note-grid" aria-label="Note placement grid"></div>
-      <p class="grid-hint">Click or tap cells to place/remove notes (JummBox-style sketch mode).</p>
+      <p class="grid-hint">Click or tap cells to place or remove notes.</p>
     </section>
-  </div>
+  </section>
 
-    <header class="editor-header">
-      <div>
-        <h2 id="editorProjectTitle">Untitled Project</h2>
-        <p id="editorProjectMeta">Background: Default</p>
-      </div>
-      <button id="backToMenu">← Back to Menu</button>
-    </header>
-    <section class="editor-workspace">
-      <div class="editor-card">
-        <h3>Project Editor</h3>
-        <p>Your project is now open. This is the editor workspace where timeline, tracks, and mixer tools can be expanded next.</p>
-      </div>
-      <div class="editor-card">
-        <h3>Quick Actions</h3>
-        <button id="saveProject">Save Project</button>
-        <button id="openMixer">Open Mixer</button>
-      </div>
-    </section>
-  </div>
-
-  <!-- Pop-ups in Their Own Containers -->
   <div id="howItWorksPopup" class="popup">
-    <div class="popup-content">
-      <h2>How It Works</h2>
-      <p>StudioTone is a music creation tool inspired by Roblox. Create, load, and customize your projects with ease.</p>
-      <button class="close-popup" data-popup="howItWorksPopup">Close</button>
-    </div>
+    <div class="popup-content"><h2>How It Works</h2><p>StudioTone is a music creation tool inspired by Roblox. Create, load, and customize your projects with ease.</p><button class="close-popup" data-popup="howItWorksPopup" type="button">Close</button></div>
   </div>
-
   <div id="settingsPopup" class="popup">
-    <div class="popup-content">
-      <h2>Settings</h2>
-      <label for="theme">Theme:</label>
-      <select id="theme">
-        <option value="light">Light</option>
-        <option value="dark">Dark</option>
-      </select>
-      <button class="close-popup" data-popup="settingsPopup">Close</button>
-    </div>
+    <div class="popup-content"><h2>Settings</h2><label for="theme">Theme:</label><select id="theme"><option value="light">Light</option><option value="dark">Dark</option></select><button class="close-popup" data-popup="settingsPopup" type="button">Close</button></div>
   </div>
-
   <div id="loadProjectPopup" class="popup">
-    <div class="popup-content">
-      <h2>Load Project</h2>
-      <input type="file" id="projectFile" accept=".json,.studiotone,.txt" hidden>
-      <button id="openFile">Open File</button>
-      <button id="loadLocalSave">Load Local Save</button>
-      <div id="errorMessage" style="display: none; color: red; border: 1px solid red; padding: 5px; margin-top: 10px;">
-        ERROR // Local Save Not Found (Error 404)
-      </div>
-      <button class="close-popup" data-popup="loadProjectPopup">Close</button>
-    </div>
+    <div class="popup-content"><h2>Load Project</h2><input type="file" id="projectFile" accept=".json,.studiotone,.txt" hidden><button id="openFile" type="button">Open File</button><button id="loadLocalSave" type="button">Load Local Save</button><div id="errorMessage" hidden>ERROR // Local Save Not Found (Error 404)</div><button class="close-popup" data-popup="loadProjectPopup" type="button">Close</button></div>
   </div>
-
   <div id="startCreatingPopup" class="popup">
-    <div class="popup-content">
-      <h2>Create New Project</h2>
-      <label for="projectName">Project Name (Required):</label>
-      <input type="text" id="projectName" required>
-      <label for="background">Background:</label>
-      <select id="background">
-        <option value="default">Default</option>
-        <option value="custom">Custom</option>
-      </select>
-      <button id="createProject">Create</button>
-      <button class="close-popup" data-popup="startCreatingPopup">Close</button>
-    </div>
+    <div class="popup-content"><h2>Create New Project</h2><label for="projectName">Project Name (Required):</label><input type="text" id="projectName" required><label for="background">Background:</label><select id="background"><option value="default">Default</option><option value="custom">Custom</option></select><button id="createProject" type="button">Create</button><button class="close-popup" data-popup="startCreatingPopup" type="button">Close</button></div>
   </div>
-
   <div id="statusPopup" class="popup">
-    <div class="popup-content status-popup-content">
-      <h2 id="statusTitle">Notice</h2>
-      <p id="statusMessage"></p>
-      <button class="close-popup" data-popup="statusPopup">Okay</button>
-    </div>
+    <div class="popup-content status-popup-content"><h2 id="statusTitle">Notice</h2><p id="statusMessage"></p><button class="close-popup" data-popup="statusPopup" type="button">Okay</button></div>
   </div>
 
-  <audio id="bgMusic" src="assets/background_music.mp3" autoplay loop preload="auto"></audio>
-
-  <!-- Background Music -->
-  <audio id="bgMusic" src="assets/background_music.mp3" autoplay loop preload="auto"></audio>
-  
+  <audio id="bgMusic" src="assets/background_music.mp3" loop preload="auto"></audio>
   <script src="script.js"></script>
 </body>
 </html>
